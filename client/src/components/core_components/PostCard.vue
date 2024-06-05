@@ -9,15 +9,15 @@
             
             <ul class="cta-container px-2">
                 <li class="my-4 mx-1 mx-md-2">
-                    <img src="/Users/sebastiancarai/Desktop/Programming/itinerary-app/client/src/assets/icons/Share.svg" alt="">
+                    <img src="../../assets/assets/icons/Share.svg" alt="">
                     <div class="cta-text mt-1">Share</div>
                 </li>
                 <li class="my-3 mx-1 mx-md-2">
-                    <img src="/Users/sebastiancarai/Desktop/Programming/itinerary-app/client/src/assets/icons/ChatSquareText.svg" alt="">
+                    <img src="../../assets/assets/icons/ChatSquareText.svg" alt="">
                     <div class="cta-text">320</div>
                 </li>
                 <li class="my-3 mx-1 mx-md-2">
-                    <img src="/Users/sebastiancarai/Desktop/Programming/itinerary-app/client/src/assets/icons/Bookmarks-1.svg" alt="">
+                    <img src="../../assets/assets/icons/Bookmarks-1.svg" alt="">
                     <!-- <div class="cta-text">Save</div> -->
                 </li>
             </ul>

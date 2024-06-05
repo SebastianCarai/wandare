@@ -2,7 +2,7 @@
     <div class="left-nav-container">
         <ul>
             <li class="logo-container px-4 py-5">
-                <img src="/Users/sebastiancarai/Desktop/Programming/itinerary-app/client/src/assets/logo/wandare-path-logo-v3.svg" alt="Wandare Logo" srcset="">
+                <img src="../../../assets/logo/wandare-path-logo-v3.svg" alt="Wandare Logo" srcset="">
             </li>
             <li class="px-4 navlink">
                 <RouterLink class="side-nav-text" to="/">
