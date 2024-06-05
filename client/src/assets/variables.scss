@@ -1,0 +1,22 @@
+$main_color: #0E376F;
+$main_color_10: rgba(14,55,111,0.7);
+$black: #2B3237;
+$white: #F9FBFF;
+$bottom_navbar_height: 75px;
+
+.nav-icon{
+    font-size: 30px;
+}
+
+ul{
+    margin: 0;
+    padding: 0;
+}
+
+:root{
+    --bs-body-bg: $white
+}
+
+
+li:hover .side-nav-text{color: $white;}
+
