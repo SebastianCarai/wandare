@@ -81,12 +81,17 @@ import VuePictureCropper, { cropper } from 'vue-picture-cropper'
 
 export default {
     components:{ImageCropper, VuePictureCropper},
+    computed:{
+        postForm(){
+            this.$store.state.postCreation.postForm
+        }
+    },
     data(){
         return{
-            postTitle: '',
-            duration: '',
+            postTitle: this.$store.state.postCreation.postForm.title || '',
+            duration: this.$store.state.postCreation.postForm.duration || '',
             imagesArray: [],
-            croppedImages: [],
+            croppedImages: this.$store.state.postCreation.postForm.thumbnails || [],
             isShowModal: false,
             activeCropperImage: 0,
             pic: ''
@@ -189,8 +194,11 @@ export default {
 
             this.$store.commit('increasePostCreationStep');
 
-            console.log(this.$store.state.postForm);
+            console.log(this.$store.state.postCreation.postForm);
         }
+    },
+    created(){
+        console.log(this.$store.state.postCreation.postForm.title);
     }
 }
 </script>

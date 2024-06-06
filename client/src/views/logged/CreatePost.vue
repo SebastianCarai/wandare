@@ -44,7 +44,7 @@ export default {
     },
     computed: {
         formStep(){
-            return this.$store.state.postCreationStep
+            return this.$store.state.postCreation.postCreationStep
         }
     }
 }

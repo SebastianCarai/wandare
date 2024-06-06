@@ -44,6 +44,7 @@ export default {
             const userInfo = response.data
             localStorage.setItem('loggedUserInfo', JSON.stringify(userInfo));
             this.$store.commit('setLoggedUser');
+            console.log(this.$store.state.loggedUser.username);
             const x = JSON.parse(localStorage.getItem('loggedUserInfo'));
             console.log(x.id);
         })

@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "startdev": "nodemon index.js & (cd client/ && npm run dev)"
+    "startdev": "nodemon index.js & (cd client/ && npm run dev)",
+    "devstart": "(lsof -i :3000 && kill -9 {PID}) & nodemon index.js & (cd client/ && npm run dev)"
   },
   "keywords": [],
   "author": "",

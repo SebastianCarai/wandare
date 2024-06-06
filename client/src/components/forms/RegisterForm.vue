@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form :action="`${$store.state.serverAddress}/register-user`" method="POST" @submit="submitForm">
+        <form action="api/register-user" method="POST" @submit="submitForm">
             <label for="username"></label>
             <input type="text" name="username" placeholder="Insert username" required v-model="form.username">
             

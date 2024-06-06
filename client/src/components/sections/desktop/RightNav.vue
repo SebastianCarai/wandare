@@ -4,7 +4,7 @@
             <div class="profile-image">
                 <img src="/Users/sebastiancarai/Downloads/dog-image.jpg" alt="">
             </div>
-            <div class="side-nav-text mx-2">{{$store.state.loggedUser.username}}</div>
+            <div class="side-nav-text mx-2">{{userInfo.username}}</div>
         </div>
 
         <ul class="side-nav-text">
@@ -17,7 +17,12 @@
 
 <script>
 export default {
-    name: 'DesktopRightNav'
+    name: 'DesktopRightNav',
+    computed:{
+        userInfo(){
+            return this.$store.state.user.loggedUser
+        }
+    }
 }
 </script>
 

@@ -81,7 +81,7 @@ app.post('/api/create-image', upload.array('images'), async (req, res) => {
 })
 
 // Handle user registration
-app.post('/register-user', registerUser);
+app.post('/api/register-user', registerUser);
 
 // Handle user login
 app.post('/api/login', loginUser)
