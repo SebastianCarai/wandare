@@ -1,22 +1,23 @@
 <template>
     <div>
+        <!-- Slider card Post title -->
         <h2 class="post-title my-3">{{sliderTitle}}</h2>
 
         <div class="slider-container">
             <div class="card">
-                <img src="/Users/sebastiancarai/Downloads/dog-image.jpg" alt="Category name">
-                <h2 class="card-title">Category name</h2>
+                <img src="/Users/sebastiancarai/Downloads/Wandare_files/pexels-photo-1062249.jpeg" alt="Category name">
+                <h2 class="card-title">Sea</h2>
             </div>
             <div class="card">
-                <img src="/Users/sebastiancarai/Downloads/dog-image.jpg" alt="Category name">
-                <h2 class="card-title">Category name</h2>
+                <img src="/Users/sebastiancarai/Downloads/Wandare_files/pexels-photo-1062249.jpeg" alt="Category name">
+                <h2 class="card-title">Mountain</h2>
             </div>
             <div class="card">
-                <img src="/Users/sebastiancarai/Downloads/dog-image.jpg" alt="Category name">
-                <h2 class="card-title">Category name</h2>
+                <img src="/Users/sebastiancarai/Downloads/Wandare_files/pexels-photo-1062249.jpeg" alt="Category name">
+                <h2 class="card-title">By Car</h2>
             </div>
             <div class="card">
-                <img src="/Users/sebastiancarai/Downloads/dog-image.jpg" alt="Category name">
+                <img src="/Users/sebastiancarai/Downloads/Wandare_files/pexels-photo-1062249.jpeg" alt="Category name">
                 <h2 class="card-title">Category name</h2>
             </div>
         </div>
@@ -45,15 +46,17 @@ export default {
 
     .card{
         display: inline-block;
-        width: 250px;
-        height: 225px;
         margin-right: 16px;
         border-radius: 40px;
+        border: none;
+        box-shadow: 0px 3px 5px rgba($color: $black, $alpha: 0.8);
         overflow: hidden;
+        width: 250px;
+        height: 225px;
 
         img{
-            width: 100%;
             height: 100%;
+            width: 100%;
         }
 
         .card-title{

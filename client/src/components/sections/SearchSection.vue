@@ -62,7 +62,7 @@ export default {
         padding-left: 70px;
         border-radius: 20px;
         box-shadow: 0px 5px 10px rgba($color: $main_color, $alpha: 0.5);
-        font-size: 20px;
+        font-size: 18px;
         font-family: 'Raleway';
 
         &:focus{
