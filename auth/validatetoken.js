@@ -5,32 +5,15 @@
 import jwt from 'jsonwebtoken';
 
 const auth = {
-    validateToken : async (req, res, next) => {
+    validateToken : (req, res, next) => {
 
+        console.log(req.headers);
         const authHeader = req.headers.authorization;
         const authToken = authHeader.split(' ')[1];
     
         try {
             const tokenDetails = jwt.verify(authToken, process.env.JWT_SECRET_KEY);
-            console.log('-- Req.body BEFORE authcheck --');
-            console.log(req.body);
-            console.log('-- Req.body BEFORE authcheck --');
             req.body['tokenDetails'] = tokenDetails;
-            console.log('-- Req.body AFTER authcheck --');
-            console.log(req.body);
-            console.log('-- Req.body AFTER authcheck --');
-            next()
-        } catch (error) {
-            res.sendStatus(403);
-        }
-    },
-    
-    validateCookie :async (req, res, next) => {
-    
-        const authToken = req.cookies.token;
-    
-        try {
-            const tokenDetails = jwt.verify(authToken, process.env.JWT_SECRET_KEY);
             next()
         } catch (error) {
             res.sendStatus(403);

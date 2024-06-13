@@ -18,6 +18,6 @@ li{
 
 section{
   height: 100vh;
-  padding: 40px 24px 100px 24px;
+  padding: 40px 24px 100px 24px !important;
   overflow-y: auto;
 }

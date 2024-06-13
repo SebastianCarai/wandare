@@ -24,7 +24,7 @@ export default {
 
 .bar-wrapper{
     width: 80%;
-    max-width: 768px;
+    max-width: 400px;
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
@@ -37,8 +37,8 @@ export default {
 }
 
 .step-circle{
-    height: 40px;
-    width: 40px;
+    height: 50px;
+    width: 50px;
     color: $white;
     border-radius: 100%;
     align-content: center;

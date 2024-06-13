@@ -1,4 +1,7 @@
 import './assets/main.css'
+// let googleApiScript = document.createElement('script');  
+// googleApiScript.setAttribute('src',`https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_API_KEY}&libraries=places&v=weekly`);
+// document.head.appendChild(googleApiScript);
 
 import { createApp } from 'vue'
 import App from './App.vue'

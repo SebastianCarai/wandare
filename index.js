@@ -17,6 +17,7 @@ const app = express();
 const port = 3000;
 
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json({limit: '10mb'}));
 app.use(bodyParser.json());
 app.use(cookieParser())
 // Defining CORS policies
@@ -91,7 +92,7 @@ app.get('/api/user-info',auth.validateToken, getLoggedUserInfo)
 
 app.get('/my-posts', auth.validateToken, getMyPosts)
 
-app.post('/api/create-post', upload.array('images'), auth.validateCookie, createPost)
+app.post('/api/create-post', auth.validateToken, createPost)
 
 
 app.listen(port, () => {

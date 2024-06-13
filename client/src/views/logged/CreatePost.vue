@@ -29,7 +29,6 @@
 
 <script>
 import FirstStep from '../../components/forms/create_post/FirstStep.vue';
-import PostCreationFormVue from '../../components/forms/create_post/PostCreationForm.vue';
 import StagesStep from '../../components/forms/create_post/StagesStep.vue';
 import StepsBar from '../../components/forms/create_post/StepsBar.vue';
 import ThirdStep from '../../components/forms/create_post/ThirdStep.vue';
@@ -37,7 +36,6 @@ import ThirdStep from '../../components/forms/create_post/ThirdStep.vue';
 export default {
     components :{
         FirstStep,
-        PostCreationFormVue,
         StagesStep,
         ThirdStep,
         StepsBar
@@ -46,7 +44,13 @@ export default {
         formStep(){
             return this.$store.state.postCreation.postCreationStep
         }
+    },
+    watch:{
+        $route(){
+            alert('leave');
+            localStorage.removeItem('firstStep');
     }
+} 
 }
 </script>
 
