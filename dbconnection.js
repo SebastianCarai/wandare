@@ -1,13 +1,10 @@
 import pg from 'pg';
 
+const connectionString = process.env.POSTGRESQL_URI;
+
 const db = new pg.Client({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'itinerary_app_test_db',
-    password: '!FalcoLevigato2002',
-    port: 5433,
+    connectionString
 });
 await db.connect();
-
 
 export default db

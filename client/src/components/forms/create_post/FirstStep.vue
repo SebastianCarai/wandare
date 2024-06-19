@@ -61,9 +61,8 @@ export default {
 
             this.$store.commit('nextFormStep');
         },
-        getCroppedImages(images){
-            this.croppedImages = images;
-            console.log(this.croppedImages);
+        getCroppedImages(base64, files){
+            this.croppedImages = base64
         }
     }
 }

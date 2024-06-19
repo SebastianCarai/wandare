@@ -7,7 +7,7 @@
             <div class="input-description" :class="{'white' : isWhite}">Show how beautiful it was this stage. Upload some images! (max 5)</div>
             <div class="file-input-wrapper">
                 <div v-for="(image,index) in croppedImages" :key="index" class="form-thumb-preview">
-                    <img :src="image" alt="">
+                    <img :src="image.base64" alt="">
                 </div>
                 <label v-if="croppedImages.length < 5" class="file-label" :class="{'white' : isWhite}" for="images">
                     <i class="fa-solid fa-square-plus"></i>
@@ -49,7 +49,9 @@
 </template>
 
 <script>
-import VuePictureCropper, { cropper } from 'vue-picture-cropper'
+import VuePictureCropper, { cropper } from 'vue-picture-cropper';
+import generateRandomString from '../../general_functions/randomstring.js';
+import axios from 'axios';
 
 export default {
     components:{VuePictureCropper},
@@ -66,6 +68,7 @@ export default {
             isShowModal: false,
             // this.thumbnails is the prop passed in the first step of the post creation
             croppedImages: this.thumbnails || [],
+            croppedFiles: [],
             activeCropperImage: 0,
             pic: ''
         }
@@ -131,10 +134,11 @@ export default {
                 return new Promise((resolve) => {
                     const img = new Image();
                     img.src = base64;
+                    console.log(img);
                     img.onload = () => {
                         let canvas = document.createElement('canvas')
-                        const MAX_WIDTH = 500
-                        const MAX_HEIGHT = 500
+                        const MAX_WIDTH = 700
+                        const MAX_HEIGHT = 700
                         let width = img.width
                         let height = img.height
 
@@ -153,7 +157,7 @@ export default {
                         canvas.height = height
                         let ctx = canvas.getContext('2d')
                         ctx.drawImage(img, 0, 0, width, height);
-                        let quality = 1.5; 
+                        let quality = 2; 
                         let dataURL = canvas.toDataURL('image/jpeg', quality);
                         resolve(dataURL);
                     }
@@ -166,15 +170,24 @@ export default {
             if (!blob) return
 
             const file = await cropper.getFile({
-                fileName: 'filename',
+                fileName: generateRandomString(32),
             })
+            console.log(file);
 
-            this.croppedImages.push(resizedImage);
+            // Cropped raw file
+            this.croppedFiles.push(file);
+            
+            // Cropped base64
+            this.croppedImages.push({
+                id: this.croppedImages.length + 1,
+                base64: resizedImage,
+            });
 
             // When last image has been cropped close the modal
             if(this.activeCropperImage == this.imagesArray.length - 1){
+                // this.sendImages(this.croppedFiles);
                 this.isShowModal = false;
-                this.$emit('images-cropped', this.croppedImages)
+                this.$emit('images-cropped', this.croppedImages, this.croppedFiles)
             };
 
             // If there are still images to crop, change cropper image
@@ -182,36 +195,28 @@ export default {
                 this.changeCropperImage();
             }
 
+
             this.showNextInput();
         },
-        resizeImage (base64Str, maxWidth = 300, maxHeight = 300){
-            return new Promise((resolve) => {
-                let img = new Image()
-                img.src = base64Str
-                img.onload = () => {
-                    let canvas = document.createElement('canvas')
-                    const MAX_WIDTH = maxWidth
-                    const MAX_HEIGHT = maxHeight
-                    let width = img.width
-                    let height = img.height
-
-                    if (width > height) {
-                        if (width > MAX_WIDTH) {
-                        height *= MAX_WIDTH / width
-                        width = MAX_WIDTH
-                        }
-                    } else {
-                        if (height > MAX_HEIGHT) {
-                        width *= MAX_HEIGHT / height
-                        height = MAX_HEIGHT
-                        }
-                    }
-                    canvas.width = width
-                    canvas.height = height
-                    let ctx = canvas.getContext('2d')
-                    ctx.drawImage(img, 0, 0, width, height)
-                    resolve(canvas.toDataURL())
-                }
+        sendImages(files){
+            const fd = new FormData();
+            files.forEach(file => {
+                fd.append('thumbnails', file)
+            });
+            console.log(fd);
+            const token = (document.cookie.match(/^(?:.*;)?\s*token\s*=\s*([^;]+)(?:.*)?$/)||[,null])[1]
+            const headers = {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${token}`
+            }
+            axios.post('/api/create-post', fd ,  {
+                headers: headers
+            })
+            .then((res) => {
+                console.log('Data');
+            })
+            .catch((err) => {
+                console.log(err);
             })
         }
     }

@@ -1,9 +1,11 @@
 <template>
-    <div>
+    <section>
+        <h2 class="header-text">Register</h2>
+
         <RegisterForm />
 
         <RouterLink to="/">Already have an account? Login</RouterLink>
-    </div>
+    </section>
 </template>
 
 <script>

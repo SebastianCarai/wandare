@@ -1,17 +1,27 @@
 <template>
     <div>
         <form action="api/register-user" method="POST" @submit="submitForm">
-            <label for="username"></label>
-            <input type="text" name="username" placeholder="Insert username" required v-model="form.username">
+            <div class="input-container">
+                <label for="username"><i class="fa-solid fa-user"></i> Username</label>
+                <input class="input-field-text" type="text" name="username" placeholder="Type here..." required v-model="form.username">
+            </div>
             
-            <label for="email"></label>
-            <input type="email" name="email" placeholder="Insert email" required v-model="form.email">
+            <div class="input-container">
+                <label for="email"><i class="fa-solid fa-envelope"></i> Email</label>
+                <input class="input-field-text" type="email" name="email" placeholder="Type here..." required v-model="form.email">
+            </div>
 
-            <label for="password"></label>
-            <input type="password" name="password" placeholder="Insert password" required v-model="form.password">
+            <div class="input-container">
+                <label for="password"><i class="fa-solid fa-key"></i> Password</label>
+                <input class="input-field-text" type="password" name="password" placeholder="Type here..." required v-model="form.password">
+            </div>
 
-            <label for="confirmPassword"></label>
-            <input type="password" name="confirmPassword" placeholder="Confirm password" required v-model="passwordConfirmation">
+            <div class="input-container">
+                <label for="confirmPassword"><i class="fa-solid fa-key"></i> Confirm password</label>
+                <input class="input-field-text" type="password" name="confirmPassword" placeholder="Type here..." required v-model="passwordConfirmation">
+            </div>
+
+            <!-- <ImageCropper /> -->
 
             <input type="submit" placeholder="Register">
         </form>
@@ -19,8 +29,11 @@
 </template>
 
 <script>
+// import ImageCropper from '../../../../wandare/client/src/components/core_components/ImageCropper.vue'
+
 export default {
     name: 'RegisterForm',
+    // components:{ImageCropper},
     data(){
         return{
             form:{
@@ -44,3 +57,9 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.input-container{
+    margin: 24px 0;
+}
+</style>

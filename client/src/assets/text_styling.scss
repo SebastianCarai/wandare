@@ -39,6 +39,14 @@
     color: $black;
 }
 
+.header-text{
+    font-size: 32px;
+    text-transform: uppercase;
+    font-family: 'Poppins';
+    font-weight: 800;
+    text-align: center;
+}
+
 .router-link-exact-active {
     color: $main_color;
     opacity: 100%;

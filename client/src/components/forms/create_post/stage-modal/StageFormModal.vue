@@ -13,11 +13,11 @@
 
             <div class="options-box">
 
-                <div class="options-card" @click="updateStageInfo(true)">
-                    <img src="../../../../assets/icons/stage-type/poi.svg" alt="Accomodation icon">
+                <div class="options-card" @click="updateStageInfo('POI')">
+                    <img src="../../../../assets/icons/stage-type/poi.svg" alt="Point of Interest icon">
                     Point of Interest
                 </div>
-                <div class="options-card" @click="updateStageInfo(false)">
+                <div class="options-card" @click="updateStageInfo('ACC')">
                     <img src="../../../../assets/icons/stage-type/accomodation.svg" alt="Accomodation icon">
                     <div>Accomodation</div>
                 </div>
@@ -57,11 +57,12 @@ export default {
 
             if(stageType){
                 this.stage.id= this.postForm.stages.length + 1;
-                this.stage.isPOI = stageType;
+                this.stage.stageType = stageType;
             }
 
             this.isStageInfoFormShown = !this.isStageInfoFormShown;
         },
+        // Create stage when the stage-created event is emitted from the stageInfoForm
         createStage(stageInfo){
             const {address, marker, images, description} = stageInfo;
 

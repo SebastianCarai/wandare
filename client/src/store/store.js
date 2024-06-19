@@ -5,6 +5,14 @@ import userInfoModule from './user-info/index.js'
 export default createStore({
   modules: {
     'postCreation' : postCreationModule,
-    'user' : userInfoModule
+    'user' : userInfoModule,
+  },
+  state:{
+    isLoading : false
+  },
+  mutations:{
+    setLoading(state,payload){
+      state.isLoading = payload;
+    }
   }
 })

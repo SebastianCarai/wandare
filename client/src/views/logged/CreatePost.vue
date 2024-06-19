@@ -1,6 +1,7 @@
 <template>
-
     <div class="container-xl">
+        <Loader />
+
         <div class="row">
             <DesktopLeftNav class="col-md-3 d-none d-md-flex p-0"/>
             <section class="col-12 col-md-9 col-lg-6">
@@ -28,6 +29,7 @@
 </template>
 
 <script>
+import Loader from '../../components/core_components/Loader.vue';
 import FirstStep from '../../components/forms/create_post/FirstStep.vue';
 import StagesStep from '../../components/forms/create_post/StagesStep.vue';
 import StepsBar from '../../components/forms/create_post/StepsBar.vue';

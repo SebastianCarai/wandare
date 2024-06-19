@@ -11,6 +11,7 @@
   "dependencies": {
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
+    "crypto": "^1.0.1",
     "jsonwebtoken": "^9.0.2",
     "leaflet-providers": "^2.0.0",
     "swiper": "^11.1.1",

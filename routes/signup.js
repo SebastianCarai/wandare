@@ -14,7 +14,7 @@ const registerUser = async (req,res) => {
         // If yes, redirect to form where error is shown
         const response = await db.query(`
         SELECT id, username, email
-        FROM test_users
+        FROM users
         WHERE username=$1 or email=$2
         `,[username,email])
 
@@ -27,10 +27,10 @@ const registerUser = async (req,res) => {
         // If user creation succeeds -> take his id from DB in order to create the JWT 
         try {
             await db.query(
-            'INSERT INTO test_users (username, password, email) VALUES ($1,$2,$3)', [username, hashedPassword,email])
+            'INSERT INTO users (username, password, email) VALUES ($1,$2,$3)', [username, hashedPassword,email])
             try {
                 const userInfo = await db.query(
-                `SELECT id FROM test_users WHERE username=$1 or email=$2`,[username,email])
+                `SELECT id FROM users WHERE username=$1 or email=$2`,[username,email])
 
                 res.cookie('token', createToken({id: userInfo.rows[0].id, username: username}))
                 res.redirect('http://localhost:5173/?success=true')

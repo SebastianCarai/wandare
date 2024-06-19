@@ -6,7 +6,10 @@
     style="
     --swiper-pagination-color:var(--your-pagination-color, #F9FBFF);
     --swiper-pagination-bullet-inactive-color:var(--inactive-pagination-color, #F9FBFF);
-    --swiper-pagination-bullet-inactive-opacity:var(--inactive-pagination-opacity, 0.5)
+    --swiper-pagination-bullet-inactive-opacity:var(--inactive-pagination-opacity, 1);
+    --swiper-pagination-bullet-width:var(--swiper-pagination-bullet-size, 7px);
+    --swiper-pagination-bullet-height:var(--swiper-pagination-bullet-size, 7px);
+
     "
     class="swiper-shadow"
     >
@@ -20,6 +23,7 @@
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import {Pagination} from 'swiper/modules'
 import 'swiper/css';
+import 'swiper/css/bundle';
 import 'swiper/css/pagination';
 
 export default {
@@ -66,6 +70,5 @@ export default {
 .swiper-shadow{
     box-shadow: 0px 5px 10px $black;
 }
-
 
 </style>

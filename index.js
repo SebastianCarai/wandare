@@ -10,7 +10,8 @@ import loginUser from './routes/login.js';
 import auth from './auth/validatetoken.js';
 import getLoggedUserInfo from './get_requests/userinfo.js';
 import getMyPosts from './get_requests/logged_user_posts.js';
-import createPost from './post_requests/create-post.js';
+import createPost from './post_requests/create_post/create-post.js';
+import getPostDetails from './get_requests/post_details.js';
 
 
 const app = express();
@@ -32,54 +33,6 @@ app.use((req, res, next) => {
 // Multer allows Express to get images data from the form when it's submitted
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
-// Posting image to S3 Bucket
-app.post('/api/create-image', upload.array('images'), async (req, res) => {
-
-    // Defining variables to use s3 bucket
-    const bucketName = process.env.BUCKET_NAME;
-    const bucketRegion = process.env.BUCKET_REGION;
-    const accessKey = process.env.ACCESS_KEY;
-    const secretAccessKey = process.env.SECRET_ACCESS_KEY;
-
-    const randomImageName = () => crypto.randomBytes(32).toString('hex');
-
-    // Connecting the app with the s3 bucket
-    const s3 = new S3Client({
-        credentials:{
-            accessKeyId: accessKey,
-            secretAccessKey: secretAccessKey
-        },
-        region: bucketRegion
-    })
-    
-    // req.file contains images data retrieved by multer 
-    console.log(req.files);
-    console.log(req.body);
-
-    const images = req.files
-
-    // for each image passed in the form
-    for (const image of images){
-        // create the object that will be sent to S3 with all the data
-        const params = {
-            Bucket: bucketName,
-            Key: randomImageName(),
-            Body: image.buffer,
-            ContentType: image.mimetype
-        }
-
-        // Sending images to S3 and waiting for the reponse
-        const command = new PutObjectCommand(params)
-        try {
-            const response = await s3.send(command);
-            console.log('Image uploaded successfully ' + response);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    res.sendStatus(200)
-})
 
 // Handle user registration
 app.post('/api/register-user', registerUser);
@@ -90,9 +43,14 @@ app.post('/api/login', loginUser)
 // Getting logged user info
 app.get('/api/user-info',auth.validateToken, getLoggedUserInfo)
 
+// !! Get user posts >> To be handled
 app.get('/my-posts', auth.validateToken, getMyPosts)
 
-app.post('/api/create-post', auth.validateToken, createPost)
+// Create post
+app.post('/api/create-post', upload.array('thumbnails[]'), auth.validateToken, createPost);
+
+// Get post info
+app.get('/api/posts/:id', auth.validateToken, getPostDetails)
 
 
 app.listen(port, () => {

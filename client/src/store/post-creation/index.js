@@ -1,15 +1,20 @@
+const firstStepData = JSON.parse(localStorage.getItem('firstStep'));
+const thirdStepData = JSON.parse(localStorage.getItem('thirdStep'));
+const stagesData = JSON.parse(localStorage.getItem('stages'));
+const authorId = JSON.parse(localStorage.getItem('loggedUserInfo')) ? JSON.parse(localStorage.getItem('loggedUserInfo')).id : '';
 export default {
     state: {
         postCreationStep: 1,
         postForm: {
-            title: JSON.parse(localStorage.getItem('firstStep')) ? JSON.parse(localStorage.getItem('firstStep')).title : '',
-            thumbnails: JSON.parse(localStorage.getItem('firstStep')) ? JSON.parse(localStorage.getItem('firstStep')).thumbnails : [],
-            duration: JSON.parse(localStorage.getItem('firstStep')) ? JSON.parse(localStorage.getItem('firstStep')).duration : '',
-            stages: JSON.parse(localStorage.getItem('stages')) ? JSON.parse(localStorage.getItem('stages')) : [],
-            description: JSON.parse(localStorage.getItem('thirdStep')) ? JSON.parse(localStorage.getItem('thirdStep')).description : '',
-            price: JSON.parse(localStorage.getItem('thirdStep')) ? JSON.parse(localStorage.getItem('thirdStep')).price : '',
-            whatToWhear: JSON.parse(localStorage.getItem('thirdStep')) ? JSON.parse(localStorage.getItem('thirdStep')).whatToWhear : '',
-            requiredDocuments: JSON.parse(localStorage.getItem('thirdStep')) ? JSON.parse(localStorage.getItem('thirdStep')).requiredDocuments : '' 
+            authorId: authorId,
+            title: firstStepData ? firstStepData.title : '',
+            thumbnails: firstStepData ? firstStepData.thumbnails : [],
+            duration: firstStepData ? firstStepData.duration : '',
+            stages: stagesData ? stagesData : [],
+            description: thirdStepData ? thirdStepData.description : '',
+            price: thirdStepData ? thirdStepData.price : '',
+            whatToWear: thirdStepData ? thirdStepData.whatToWear : '',
+            requiredDocuments: thirdStepData ? thirdStepData.requiredDocuments : '' 
         },
         thisStage: {},
         isStageModalOpen: false
@@ -29,6 +34,7 @@ export default {
         },
         // Set info for the first step of the creation post
         setFirstStepState(state){
+            state.postForm.authorId = Number(JSON.parse(localStorage.getItem('loggedUserInfo')).id);
             state.postForm.title = JSON.parse(localStorage.getItem('firstStep')).title;
             state.postForm.thumbnails = JSON.parse(localStorage.getItem('firstStep')).thumbnails;
             state.postForm.duration = JSON.parse(localStorage.getItem('firstStep')).duration;
@@ -44,7 +50,7 @@ export default {
         setThirdStepState(state){
             state.postForm.description = JSON.parse(localStorage.getItem('thirdStep')).description;
             state.postForm.price = JSON.parse(localStorage.getItem('thirdStep')).price;
-            state.postForm.whatToWhear = JSON.parse(localStorage.getItem('thirdStep')).whatToWhear;
+            state.postForm.whatToWear = JSON.parse(localStorage.getItem('thirdStep')).whatToWear;
             state.postForm.requiredDocuments = JSON.parse(localStorage.getItem('thirdStep')).requiredDocuments;
         },
     }

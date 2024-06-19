@@ -12,6 +12,7 @@ import DesktopRightNav from './components/sections/desktop/RightNav.vue';
 import PostFeed from './components/core_components/PostFeed.vue';
 import MobileBottomNav from './components/sections/mobile/BottomNav.vue';
 import BurgerMenu from './components/sections/mobile/BurgerMenu.vue';
+import Loader from './components/core_components/Loader.vue'
 
 const app = createApp(App);
 
@@ -23,6 +24,7 @@ app.component('DesktopRightNav', DesktopRightNav)
 app.component('PostFeed', PostFeed)
 app.component('MobileBottomNav', MobileBottomNav)
 app.component('BurgerMenu', BurgerMenu)
+app.component('Loader', Loader)
 
 
 app.use(bootstrap);

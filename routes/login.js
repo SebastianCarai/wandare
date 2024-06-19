@@ -11,7 +11,7 @@ const loginUser = async (req, res) =>{
         // Search in the db a user with the username or identifier passed in the form
         const user = await db.query(`
         SELECT id,username,email,password
-        FROM test_users
+        FROM users
         WHERE username=$1 or email=$1`, [identifier]);
 
         // If the response has no rows it means the user doesn't exist

@@ -5,8 +5,8 @@
             <div class="accordion-header" @click="showAccordionInfo(stage.id)">
                 <div class="left-accordion">
                     <div>
-                        <img class="accordion-icon" v-if="!stage.isPOI" src="../../../../assets/icons/stage-type/accomodation-black.svg" alt="">
-                        <img class="accordion-icon" v-if="stage.isPOI" src="../../../../assets/icons/stage-type/poi-black.svg" alt="">
+                        <img class="accordion-icon" v-if="stage.stageType == 'ACC'" src="../../../../assets/icons/stage-type/accomodation-black.svg" alt="">
+                        <img class="accordion-icon" v-if="stage.stageType == 'POI'" src="../../../../assets/icons/stage-type/poi-black.svg" alt="">
                     </div>
                     <div class="divider mx-3"></div>
                     <div class="stage-name">{{ stage.name }}</div>
