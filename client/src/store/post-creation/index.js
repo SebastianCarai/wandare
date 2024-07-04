@@ -1,6 +1,7 @@
 const firstStepData = JSON.parse(localStorage.getItem('firstStep'));
 const thirdStepData = JSON.parse(localStorage.getItem('thirdStep'));
 const stagesData = JSON.parse(localStorage.getItem('stages'));
+const mapData = JSON.parse(localStorage.getItem('mapData'));
 const authorId = JSON.parse(localStorage.getItem('loggedUserInfo')) ? JSON.parse(localStorage.getItem('loggedUserInfo')).id : '';
 export default {
     state: {
@@ -11,10 +12,12 @@ export default {
             thumbnails: firstStepData ? firstStepData.thumbnails : [],
             duration: firstStepData ? firstStepData.duration : '',
             stages: stagesData ? stagesData : [],
+            mapZoom : mapData ? mapData.zoom : 10,
+            mapCenter : mapData ? mapData.center : [],
             description: thirdStepData ? thirdStepData.description : '',
             price: thirdStepData ? thirdStepData.price : '',
             whatToWear: thirdStepData ? thirdStepData.whatToWear : '',
-            requiredDocuments: thirdStepData ? thirdStepData.requiredDocuments : '' 
+            requiredDocuments: thirdStepData ? thirdStepData.requiredDocuments : '',
         },
         thisStage: {},
         isStageModalOpen: false
@@ -46,6 +49,10 @@ export default {
         // Add single stage to the stages array
         addStage(state, stage){
             state.postForm.stages.push(stage);
+        },
+        setMapData(state, {zoom, lat, long}){
+            state.postForm.mapZoom = JSON.parse(localStorage.getItem('mapData')).zoom;
+            state.postForm.mapCenter = JSON.parse(localStorage.getItem('mapData')).center;
         },
         setThirdStepState(state){
             state.postForm.description = JSON.parse(localStorage.getItem('thirdStep')).description;

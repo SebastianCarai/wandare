@@ -3,13 +3,18 @@
 
         <!-- FILE INPUT -->
         <div class="input-wrapper">
-            <div class="input-label" :class="{'white' : isWhite}">Choose images</div>
-            <div class="input-description" :class="{'white' : isWhite}">Show how beautiful it was this stage. Upload some images! (max 5)</div>
+            <div class="input-label" :class="{'white' : isWhite , 'center' : isCentered}">{{ title }}</div>
+            <div v-if="description" class="input-description" :class="{'white' : isWhite}">{{ description }}</div>
             <div class="file-input-wrapper">
-                <div v-for="(image,index) in croppedImages" :key="index" class="form-thumb-preview">
-                    <img :src="image.base64" alt="">
+                <!-- Cropped image results -->
+                <div v-longpress="toggleEditMode" style="position:relative;" class="d-flex form-thumb-preview" v-for="(image,index) in croppedImages" :key="index" >
+                    <div class="" :class="{'is-round' : isRound}">
+                        <img :src="image.base64" alt="">
+                        <i v-if="isEditModeActive" class="fa-regular fa-circle-xmark"></i>
+                    </div>
                 </div>
-                <label v-if="croppedImages.length < 5" class="file-label" :class="{'white' : isWhite}" for="images">
+                <!-- Input for images -->
+                <label v-if="croppedImages.length < maxImages" class="file-label" :class="{'white' : isWhite}" for="images">
                     <i class="fa-solid fa-square-plus"></i>
                     <input @change="getImageData" id="images" type="file" name="images" accept="image/*" required multiple hidden>
                 </label>
@@ -25,7 +30,7 @@
                 <div class="cropper-title">Crop your image</div>
                 <VuePictureCropper
                     :boxStyle="{
-                        width: '100%',
+                        height: '100%',
                         backgroundColor: '#f8f8f8',
                         margin: 'auto',
                     }"
@@ -35,11 +40,14 @@
                         dragMode: 'crop',
                         aspectRatio: 4 / 4,
                     }"
+                    :presetMode="{
+                        mode: isRound ? 'round' : '',
+                    }"
                 />
 
                 <div class="d-flex">
                     <button v-if="activeCropperImage < imagesArray.length - 1" @click="getCroppedImage" class="cropper-btn">Next</button>
-                    <button v-if="activeCropperImage == imagesArray.length - 1" @click="getCroppedImage" class="cropper-btn">Done</button>
+                    <button type="button" v-if="activeCropperImage == imagesArray.length - 1" @click="getCroppedImage" class="cropper-btn">Done</button>
                 </div>
 
             </div>
@@ -59,8 +67,14 @@ export default {
     // If the prop is null, the cropper is used in the stage creation
     // If not null, the cropper is used in the first step of the post creation
     props: {
+        isMaxSizeReduced: Boolean,
         thumbnails: Array,
-        isWhite: Boolean
+        isWhite: Boolean,
+        title: String,
+        description: String,
+        isRound : Boolean,
+        maxImages : Number,
+        isCentered : Boolean
     },
     data(){
         return{
@@ -70,7 +84,8 @@ export default {
             croppedImages: this.thumbnails || [],
             croppedFiles: [],
             activeCropperImage: 0,
-            pic: ''
+            pic: '',
+            isEditModeActive : false
         }
     },
     methods:{
@@ -111,9 +126,9 @@ export default {
             });
         },
         // Check how many images have been uploaded
-        // And show input only if there are less than 5
+        // And show input only if there are less than maxImages
         showNextInput(){
-            if(this.croppedImages.length < 5){
+            if(this.croppedImages.length < this.maxImages){
                 this.showNextFileInput++
             }   
         },
@@ -130,15 +145,14 @@ export default {
 
             const base64 = cropper.getDataURL()
 
-            const resizeImage = function(){
+            const resizeImage = function(maxSize){
                 return new Promise((resolve) => {
                     const img = new Image();
                     img.src = base64;
-                    console.log(img);
                     img.onload = () => {
                         let canvas = document.createElement('canvas')
-                        const MAX_WIDTH = 700
-                        const MAX_HEIGHT = 700
+                        const MAX_WIDTH = maxSize
+                        const MAX_HEIGHT = maxSize
                         let width = img.width
                         let height = img.height
 
@@ -158,12 +172,15 @@ export default {
                         let ctx = canvas.getContext('2d')
                         ctx.drawImage(img, 0, 0, width, height);
                         let quality = 2; 
-                        let dataURL = canvas.toDataURL('image/jpeg', quality);
+                        let dataURL = canvas.toDataURL('image/png', quality);
                         resolve(dataURL);
                     }
                 })
             }
-            const resizedImage = await resizeImage();
+            
+            const maxSize = this.isMaxSizeReduced ? 300 : 600;
+
+            const resizedImage = await resizeImage(maxSize);
 
             const blob = await cropper.getBlob()
 
@@ -172,8 +189,6 @@ export default {
             const file = await cropper.getFile({
                 fileName: generateRandomString(32),
             })
-            console.log(file);
-
             // Cropped raw file
             this.croppedFiles.push(file);
             
@@ -185,7 +200,6 @@ export default {
 
             // When last image has been cropped close the modal
             if(this.activeCropperImage == this.imagesArray.length - 1){
-                // this.sendImages(this.croppedFiles);
                 this.isShowModal = false;
                 this.$emit('images-cropped', this.croppedImages, this.croppedFiles)
             };
@@ -198,26 +212,8 @@ export default {
 
             this.showNextInput();
         },
-        sendImages(files){
-            const fd = new FormData();
-            files.forEach(file => {
-                fd.append('thumbnails', file)
-            });
-            console.log(fd);
-            const token = (document.cookie.match(/^(?:.*;)?\s*token\s*=\s*([^;]+)(?:.*)?$/)||[,null])[1]
-            const headers = {
-                'Content-Type': 'multipart/form-data',
-                'Authorization': `Bearer ${token}`
-            }
-            axios.post('/api/create-post', fd ,  {
-                headers: headers
-            })
-            .then((res) => {
-                console.log('Data');
-            })
-            .catch((err) => {
-                console.log(err);
-            })
+        toggleEditMode(){
+            this.isEditModeActive = !this.isEditModeActive;
         }
     }
 }
@@ -244,6 +240,10 @@ export default {
     transform: translate(-50%,-50%);
     z-index: 100000;
 
+    & *{
+        max-height: 390px !important;
+    }
+
     .close-modal-icon{
         position: absolute;
         right: 14px;
@@ -267,5 +267,8 @@ export default {
         border-radius: 5px;
         margin: 8px;
     }
+}
+.center{
+    text-align: center !important;
 }
 </style>

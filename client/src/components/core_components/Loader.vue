@@ -1,7 +1,6 @@
 <template>
     <div v-if="isLoading" class="loader">
-        <!-- <h1>Loading</h1> -->
-
+        <div class="loader-icon"></div>
     </div>
 </template>
 
@@ -18,17 +17,27 @@ export default {
 <style lang="scss" scoped>
 @import '../src/assets/variables.scss';
 
-.loader {
+.loader{
+    width: 100%;
+    height: 100vh;
+    background-color: rgba($color: $black, $alpha: .5);
     position: absolute;
-    left: calc(50% - 60px);
-    top: calc(50% - 60px);
+    left: 0;
+    top: 0;
+    z-index: 100;
+}
+
+.loader-icon {
+    position: absolute;
+    left: calc(50% - 50px);
+    top: calc(50% - 50px);
     transform: translate(-50%,-50%);
-    border: 10px solid #f3f3f3; /* Light grey */
-    border-top: 10px solid $main_color; /* Blue */
+    border: 15px solid $white; /* Light grey */
+    border-top: 15px solid $main_color; /* Blue */
     border-radius: 50%;
-    width: 120px;
-    height: 120px;
-    animation: spin 2s linear infinite;
+    width: 100px;
+    height: 100px;
+    animation: spin 1s linear infinite;
 }
 
 @keyframes spin {

@@ -2,7 +2,7 @@
     <div class="right-nav-container d-flex flex-column justify-content-between py-5 px-4">
         <div class="profile-button d-flex align-items-center">
             <div class="profile-image">
-                <img src="/Users/sebastiancarai/Downloads/dog-image.jpg" alt="">
+                <img :src="this.$store.state.user.loggedUser.imageUrl" alt="">
             </div>
             <div class="side-nav-text mx-2">{{userInfo.username}}</div>
         </div>
@@ -22,7 +22,7 @@ export default {
         userInfo(){
             return this.$store.state.user.loggedUser
         }
-    }
+    },
 }
 </script>
 
@@ -39,7 +39,7 @@ export default {
     height: 50px;
     border-radius: 100%;
     overflow: hidden;
-    padding: 1px;
+    padding: 3px;
     background-color: $main_color;
     img{
         width: 100%;

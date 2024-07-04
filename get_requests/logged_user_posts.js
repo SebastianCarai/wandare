@@ -1,4 +1,4 @@
-import db from '../dbconnection.js'
+import db from '../externals/dbconnection.js'
 
 const getMyPosts = async (req, res) =>{
     const loggedUserID = req.body.id

@@ -8,16 +8,18 @@ import 'dotenv/config';
 import registerUser from './routes/signup.js';
 import loginUser from './routes/login.js';
 import auth from './auth/validatetoken.js';
-import getLoggedUserInfo from './get_requests/userinfo.js';
-import getMyPosts from './get_requests/logged_user_posts.js';
+import getLoggedUserInfo from './get_requests/logged_userinfo.js';
+import getUserPosts from './get_requests/user_posts.js';
 import createPost from './post_requests/create_post/create-post.js';
 import getPostDetails from './get_requests/post_details.js';
+import homeFeed from './get_requests/homepage_posts.js';
+import getUserInfo from './get_requests/user_info.js'
 
 
 const app = express();
 const port = 3000;
 
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: false, limit: '5mb' }))
 app.use(bodyParser.json({limit: '10mb'}));
 app.use(bodyParser.json());
 app.use(cookieParser())
@@ -32,7 +34,7 @@ app.use((req, res, next) => {
 
 // Multer allows Express to get images data from the form when it's submitted
 const storage = multer.memoryStorage()
-const upload = multer({ storage: storage })
+const upload = multer({ storage: storage, limits: { fieldSize: 25 * 1024 * 1024 } })
 
 // Handle user registration
 app.post('/api/register-user', registerUser);
@@ -41,10 +43,16 @@ app.post('/api/register-user', registerUser);
 app.post('/api/login', loginUser)
 
 // Getting logged user info
-app.get('/api/user-info',auth.validateToken, getLoggedUserInfo)
+app.get('/api/logged-user-info',auth.validateToken, getLoggedUserInfo)
 
-// !! Get user posts >> To be handled
-app.get('/my-posts', auth.validateToken, getMyPosts)
+// Getting user info
+app.get('/api/user-info/:username',auth.validateToken, getUserInfo)
+
+// Get home feed posts
+app.get('/api/home-feed', auth.validateToken, homeFeed);
+
+// Get user posts
+app.get('/api/user-posts/:id', auth.validateToken, getUserPosts)
 
 // Create post
 app.post('/api/create-post', upload.array('thumbnails[]'), auth.validateToken, createPost);

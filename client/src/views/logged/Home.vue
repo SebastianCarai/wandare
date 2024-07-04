@@ -3,7 +3,14 @@
         <button @click="logOut">logOut</button>
         <div class="row">
             <DesktopLeftNav class="col-md-3 d-none d-md-flex p-0"/>
-            <HomePostSection class="col-12 col-md-9 col-lg-6"/>
+            <!-- Homepage post Feeed -->
+            <div class="col-12 col-md-9 col-lg-6">
+                <div class="posts-container py-5 d-flex flex-column align-items-center d-md-block px-md-4">
+                    <div class="mb-5 intro-text">What's new</div>
+                    <PostFeed :posts="homeFeedPosts"/>
+                </div>
+            </div>
+            <!-- End homepage post Feeed -->
             <DesktopRightNav class="col-lg-3 d-none d-lg-flex" />
         </div>
 
@@ -14,11 +21,18 @@
 </template>
 
 <script>
-import axios from 'axios';
+import Axios from 'axios';
+import { setupCache } from 'axios-cache-interceptor';
+const instance = Axios.create(); 
+const axios = setupCache(instance);
 import logOut from '../../general_functions/logout';
 import HomePostSection from '../../components/sections/desktop/HomePostSection.vue';
-const token = (document.cookie.match(/^(?:.*;)?\s*token\s*=\s*([^;]+)(?:.*)?$/)||[,null])[1]
+const token = localStorage.getItem('token');
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
+const headers = {
+    'Content-Type': 'multipart/form-data',
+    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+}
 
 export default {
     components: {HomePostSection},
@@ -27,30 +41,50 @@ export default {
             posts: null
         }
     },
+    computed: {
+        homeFeedPosts(){
+            return this.posts
+        }
+    },
     methods:{
         logOut(){
             logOut()
+        },
+        // Passing logged user info to the state as soon as the user logs in
+        getUserInfo(){
+            axios.get('/api/logged-user-info', {headers : headers})
+            .then(response => {
+                const userInfo = response.data
+                localStorage.setItem('loggedUserInfo', JSON.stringify(userInfo));
+                this.$store.commit('setLoggedUser');
+            })
+            .catch(err => {
+                console.log(err);
+                if(err.response.status == 403){
+                    logOut()
+                }
+            })
+        },
+        // Get home feed posts
+        getHomeFeed(){
+            axios.get('/api/home-feed', {headers : headers})
+            .then((res) => {
+                console.log(res.cached);
+                this.posts = res.data;
+            })
         }
-
     },
     created(){
-        // if(this.$route.query.success){
-        //     window.location.href = '/';
-        // }
+        // If user has logged redirect to '7' and remove token from url
+        if(this.$route.query.token){
+            const token = this.$route.query.token;
+            localStorage.setItem('token', token);
+            window.location.href = "/"
+        }
 
-        // Passing logged user info to the state as soon as the user logs in
-        axios.get('/api/user-info')
-        .then(response => {
-            const userInfo = response.data
-            localStorage.setItem('loggedUserInfo', JSON.stringify(userInfo));
-            this.$store.commit('setLoggedUser');
-        })
-        .catch(err => {
-            console.log(err);
-            if(err.response.status == 403){
-                logOut()
-            }
-        })
+        this.getUserInfo();
+
+        this.getHomeFeed();
     }
 }
 </script>

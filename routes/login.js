@@ -1,7 +1,7 @@
 // 
 
 import bcrypt from 'bcrypt'
-import db from '../dbconnection.js'
+import db from '../externals/dbconnection.js'
 import createToken from '../auth/jtw.js'
 
 const loginUser = async (req, res) =>{
@@ -28,8 +28,9 @@ const loginUser = async (req, res) =>{
             const {id, username} = user.rows[0];
             const isMatch = await bcrypt.compare(password,userPassword)
             if(isMatch){
-                res.cookie('token', createToken({id: id, username: username}))
-                res.redirect('http://localhost:5173/?success=true')
+                const token = createToken({id: id, username: username})
+                res.cookie('token', token);
+                res.redirect(`http://localhost:5173/?token=${token}`);
             }
             else{
                 res.redirect('http://localhost:5173/?error=2')

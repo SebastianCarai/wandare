@@ -1,13 +1,13 @@
 import crypto from 'crypto';
-import supabase from '../../supabaseConnectionSDK.js';
-import { s3,bucketName } from '../../s3bucket.js';
-import imageToS3 from './img_to_s3.js'
+import supabase from '../../externals/supabaseConnectionSDK.js';
+import { s3,bucketName } from '../../externals/s3bucket.js';
+import imageToS3 from '../../externals/img_to_s3.js'
 
 const createPost = async (req, res) => {
 
     try {
         // Get data from request body
-        const {authorId, title, description, thumbnails, duration, stages, price, whatToWear, requiredDocuments} = req.body;
+        const {authorId, title, description, thumbnails, duration, stages, price, whatToWear, requiredDocuments, mapCenter, mapZoom} = req.body;
     
         // Function that generates string for image name
         // This name will be used to generate SignedUrl for s3 images
@@ -30,6 +30,12 @@ const createPost = async (req, res) => {
             'post_title' : title, 
             'post_duration' : duration,
             'thumbnails' : imagesNames,
+            'description' : description,
+            'pricing' : price,
+            'what_to_wear' : whatToWear,
+            'required_documents': requiredDocuments,
+            'map_center' : mapCenter,
+            'map_zoom' : mapZoom
          }])
         .select('id')
         .single()
@@ -64,7 +70,7 @@ const createPost = async (req, res) => {
                 'marker' : stage.marker,
                 'images': stageImagesNames,
                 'description' : stage.description,
-                'post_id': post.id
+                'post_id': post.id,                
             })
     
             if(stagesError){

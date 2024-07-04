@@ -44,6 +44,12 @@ const router = createRouter({
       name: 'post-detail-page',
       meta: { requiresAuth: true },
       component : () => import('../views/logged/PDP.vue')
+    },
+    {
+      path: '/profile/:username',
+      name: 'profile',
+      meta: { requiresAuth: true },
+      component: () => import('../views/logged/ProfilePage.vue')
     }
   ]
 })
@@ -52,9 +58,15 @@ router.beforeEach((to, from) => {
   // instead of having to check every route record with
   // to.matched.some(record => record.meta.requiresAuth)
   let loggedIn = false;
+  const token = localStorage.getItem('token');
   const cookieToken = (document.cookie.match(/^(?:.*;)?\s*token\s*=\s*([^;]+)(?:.*)?$/)||[,null])[1];
-  cookieToken ? loggedIn = true : loggedIn = false;
-  if (to.meta.requiresAuth && !loggedIn) {
+  if(cookieToken || token){
+    localStorage.setItem('token', cookieToken);
+    loggedIn = true
+  }else{
+    loggedIn = false
+  }
+  if (to.meta.requiresAuth && loggedIn === false) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     return {

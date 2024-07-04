@@ -53,8 +53,8 @@
                 </RouterLink>
             </li>
             <li class="navlink">
-                <RouterLink class="side-nav-text" to="/profile">
-                    <img class="profile-icon" src="/Users/sebastiancarai/Downloads/dog-image.jpg" alt="Saved posts icon">
+                <RouterLink class="side-nav-text" :to="`/profile/${username}`">
+                    <img :class="{ 'bottom-nav-icon-active': activeIcon=='profile' }" class="profile-icon" :src="profileImage" alt="Saved posts icon">
                 </RouterLink>
             </li>
         </ul>
@@ -66,6 +66,14 @@ export default {
     name: 'mobileBottomNav',
     props:{
         activeIcon : String
+    },
+    computed:{
+        profileImage(){
+            return this.$store.state.user.loggedUser.imageUrl
+        },
+        username(){
+            return this.$store.state.user.loggedUser.username
+        }
     }
 }
 </script>
@@ -105,6 +113,10 @@ export default {
     height: 40px;
     border-radius: 100%;
     border: 1px solid rgba($color: $white, $alpha: 1.0);
+
+    &.bottom-nav-icon-active{
+        border: 3px solid $main_color;
+    }
 }
 
 .bottom-nav-icon *{

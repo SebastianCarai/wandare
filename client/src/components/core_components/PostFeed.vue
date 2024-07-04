@@ -1,13 +1,7 @@
 <template>
     <ul class="d-flex flex-column align-items-center d-md-block">
-        <li>
-            <PostCard />
-        </li>
-        <li>
-            <PostCard />
-        </li>
-        <li>
-            <PostCard />
+        <li v-for="(post,index) in posts" :key="index">
+            <PostCard :post="post" />
         </li>
     </ul>
 </template>
@@ -16,6 +10,9 @@
 import PostCard from './PostCard.vue'
 
 export default {
-    components:{PostCard}
+    components:{PostCard},
+    props: {
+        posts: Array
+    }
 }
 </script>

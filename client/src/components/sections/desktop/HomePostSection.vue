@@ -1,15 +1,28 @@
 <template>
-    <div class="posts-container py-5 d-flex flex-column align-items-center d-md-block px-md-4">
-        <div class="mb-5 intro-text">What's new</div>
-        <PostFeed />
-    </div>
+
 </template>
 
 <script>
+import axios from 'axios'
 import PostFeed from '../../core_components/PostFeed.vue'
+const headers = {
+    'Content-Type': 'multipart/form-data',
+    'Authorization': `Bearer ${localStorage.getItem('token')}`
+}
 
 export default {
-    components:{PostFeed}
+    components:{PostFeed},
+    methods: {
+        getHomeFeed(){
+            axios.get('/api/home-feed', {headers : headers})
+            .then((res) => {
+                console.log(res);
+            })
+        }
+    },
+    created(){
+        this.getHomeFeed();
+    }
 }
 </script>
 

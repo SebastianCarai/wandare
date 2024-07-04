@@ -15,7 +15,7 @@
         </div>
 
         <!-- Image cropper -->
-        <ImageCropper :thumbnails="croppedImages" @images-cropped="getCroppedImages"/>
+        <ImageCropper :maxImages="5" :thumbnails="croppedImages" @images-cropped="getCroppedImages"/>
 
         <!-- TRIP DURATION INPUT -->
         <div class="input-wrapper">        

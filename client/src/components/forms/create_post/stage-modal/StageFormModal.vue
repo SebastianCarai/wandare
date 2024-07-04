@@ -90,6 +90,7 @@ export default {
     background-color: $black_60;
     color: white;
     position: absolute;
+    z-index: 1;
     max-height: 600px;
     left: 50%;
     top: 50%;

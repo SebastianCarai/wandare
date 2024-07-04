@@ -1,29 +1,29 @@
 <template>
     <div class="post-card">
-        <RouterLink :to="`/posts/${id}`">
-            <h1 class="post-title">Trip to the Dolomites</h1>
+        <RouterLink :to="`/posts/${post.id}`">
+            <h1 class="post-title">{{post.post_title}}</h1>
         </RouterLink>
-        <div class="post-author">Franco Retoni</div>
+        <div class="post-author">{{post.author}}</div>
         <div class="d-flex align-items-end">
-            <ImageSlider/>
+            <ImageSlider :images="post.images"/>
             
             <ul class="cta-container px-2">
                 <li class="my-4 mx-1 mx-md-2">
-                    <img src="../../assets/icons/Share.svg" alt="">
+                    <img src="../../assets/icons/post-cta/share.svg" alt="">
                     <div class="cta-text mt-1">Share</div>
                 </li>
                 <li class="my-3 mx-1 mx-md-2">
-                    <img src="../../assets/icons/ChatSquareText.svg" alt="">
+                    <img src="../../assets/icons/post-cta/comment.svg" alt="">
                     <div class="cta-text">320</div>
                 </li>
                 <li class="my-3 mx-1 mx-md-2">
-                    <img src="../../assets/icons/Bookmarks-1.svg" alt="">
+                    <img src="../../assets/icons/post-cta/save.svg" alt="">
                     <!-- <div class="cta-text">Save</div> -->
                 </li>
             </ul>
         </div>
         <div class="duration-text mt-2">
-            <span>Duration:</span> <span class="duration-text duration-time">5 days</span>
+            <span>Duration:</span> <span class="duration-text duration-time">{{post.post_duration}}</span>
         </div> 
     </div>
 </template>
@@ -33,10 +33,8 @@ import ImageSlider from './ImageSlider.vue'
 
 export default {
     components:{ImageSlider},
-    data(){
-        return{
-            id: 5
-        }
+    props: {
+        post : Object
     }
 }
 </script>

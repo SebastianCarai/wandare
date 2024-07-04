@@ -27,7 +27,7 @@
         <Map @zoom-updated="setZoom" v-if="isMapShow" :coordinates="stageInfo.marker"/>
 
         <!-- Image cropper -->
-        <ImageCropper :isWhite="true" @images-cropped="getCroppedImages" />
+        <ImageCropper :maxImages="3" :isWhite="true" @images-cropped="getCroppedImages" />
 
         <!-- Stage description input -->
         <div class="input-wrapper stage-input-wrapper">        
@@ -94,8 +94,8 @@ export default {
             this.stageInfo.marker.zoom = zoom;
         },
         createStage(){
-            this.$emit('stage-created', this.stageInfo);
             this.$store.commit('chanegStageModalStatus');
+            this.$emit('stage-created', this.stageInfo);
         }
     }
 }

@@ -62,25 +62,23 @@ export default {
             this.sendPostData();
         },
         sendPostData(){
-            const token = (document.cookie.match(/^(?:.*;)?\s*token\s*=\s*([^;]+)(?:.*)?$/)||[,null])[1]
+            const token = localStorage.getItem('token')
             const headers = {
                 'Content-Type': 'multipart/form-data',
                 'Authorization': `Bearer ${token}`
             }
             this.$store.commit('setLoading', true);
+            console.log(this.postForm);
             axios.post('/api/create-post', this.postForm,  {
                 headers: headers
             })
             .then((res) => {
                 const postId = res.data
-                this.$router.push({ name: 'post-detail-page', params: { id: postId } })
+                this.$router.push({ name: 'post-detail-page', params: { id: postId } });
+                // localStorage.removeItem('firstStep');
+                // localStorage.removeItem('stages');
+                // localStorage.removeItem('thirdStep');
             })
-            // .then((res) => {
-            //     console.log(res);
-            // })
-            // .catch((err) => {
-            //     console.log(err);
-            // })
         }
     }
 }

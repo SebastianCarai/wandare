@@ -12,9 +12,10 @@
 
     "
     class="swiper-shadow"
+    :class="{'swiper-full' : isSwiperFull}"
     >
         <SwiperSlide v-for="(image, index) in images" :key="index">
-            <img :src="image" alt=""/>
+            <img loading="lazy" :src="image" alt=""/>
         </SwiperSlide>
     </Swiper>
 </template>
@@ -28,9 +29,13 @@ import 'swiper/css/pagination';
 
 export default {
     components:{Swiper, SwiperSlide},
+    props:{
+        images: Array,
+        isSwiperFull : Boolean
+    },
     data(){
         return{
-            images: [
+            defaultImages: [
                 'https://images.pexels.com/photos/1062249/pexels-photo-1062249.jpeg',
                 'https://images.pexels.com/photos/748898/pexels-photo-748898.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
                 'https://images.pexels.com/photos/554609/pexels-photo-554609.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
@@ -54,8 +59,6 @@ export default {
     width: 100%;
     aspect-ratio: 4 / 4;
     max-width: 278px;
-    // height: 100%;
-    // max-height: 278px;
     margin: 10px 0 0 0;
     border-radius: 25px;
     overflow: hidden;
@@ -64,6 +67,16 @@ export default {
         width: 100%;
         height: 100%;
         object-fit: cover;
+    }
+}
+
+.swiper-full{
+    width: 100% !important;
+    border-radius: 0;
+    margin: 0;
+
+    &.swiper{
+        max-width: 500px;
     }
 }
 

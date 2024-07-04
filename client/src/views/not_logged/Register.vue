@@ -2,9 +2,11 @@
     <section>
         <h2 class="header-text">Register</h2>
 
-        <RegisterForm />
+        <div class="wrapper">
+            <RegisterForm />
 
-        <RouterLink to="/">Already have an account? Login</RouterLink>
+            <RouterLink to="/" class="router-link">Already have an account? Login</RouterLink>
+        </div>
     </section>
 </template>
 
@@ -17,3 +19,10 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.wrapper{
+    max-width: 500px;
+    margin: auto;
+}
+</style>

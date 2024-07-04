@@ -1,45 +1,71 @@
 <template>
     <div>
-        <form action="api/register-user" method="POST" @submit="submitForm">
+        <form action="/api/register-user" method="POST" @submit="submitForm">
             <div class="input-container">
-                <label for="username"><i class="fa-solid fa-user"></i> Username</label>
+                <div>
+                    <label for="username"><i class="fa-solid fa-user"></i> Username</label>
+                </div>
                 <input class="input-field-text" type="text" name="username" placeholder="Type here..." required v-model="form.username">
             </div>
             
             <div class="input-container">
-                <label for="email"><i class="fa-solid fa-envelope"></i> Email</label>
+                <div>
+                    <label for="email"><i class="fa-solid fa-envelope"></i> Email</label>
+                </div>
                 <input class="input-field-text" type="email" name="email" placeholder="Type here..." required v-model="form.email">
             </div>
 
             <div class="input-container">
-                <label for="password"><i class="fa-solid fa-key"></i> Password</label>
+                <div>
+                    <label for="password"><i class="fa-solid fa-key"></i> Password</label>
+                </div>
                 <input class="input-field-text" type="password" name="password" placeholder="Type here..." required v-model="form.password">
             </div>
 
             <div class="input-container">
-                <label for="confirmPassword"><i class="fa-solid fa-key"></i> Confirm password</label>
+                <div>
+                    <label for="confirmPassword"><i class="fa-solid fa-key"></i> Confirm password</label>
+                </div>
                 <input class="input-field-text" type="password" name="confirmPassword" placeholder="Type here..." required v-model="passwordConfirmation">
             </div>
 
-            <!-- <ImageCropper /> -->
+            <ImageCropper 
+                @images-cropped="getProfileImage" 
+                :isCentered="true" 
+                :maxImages="1"
+                :title="'Insert profile photo'" 
+                :isRound="true" 
+                :isMaxSizeReduced="true"
+            />
 
-            <input type="submit" placeholder="Register">
+            <input name="profileImage" type="hidden" v-model="form.profileImage">
+            
+            <div class="d-flex justify-center">
+                <button @click="submitForm" type="submit" class="submit-button">Register</button>
+            </div>
         </form>
     </div>
 </template>
 
 <script>
-// import ImageCropper from '../../../../wandare/client/src/components/core_components/ImageCropper.vue'
+import ImageCropper from '../../components/core_components/ImageCropper.vue';
+import axios from 'axios';
+const token = localStorage.getItem('token');
+const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+}
 
 export default {
     name: 'RegisterForm',
-    // components:{ImageCropper},
+    components:{ImageCropper},
     data(){
         return{
             form:{
                 username: '',
                 email: '',
                 password: '',
+                profileImage: ''
             },
             passwordConfirmation: ''
         }
@@ -53,6 +79,10 @@ export default {
                 e.preventDefault();
             }
 
+        },
+        getProfileImage(base64, files){
+            this.form.profileImage = base64[0].base64;
+            console.log(this.form.profileImage);
         }
     }
 }
@@ -61,5 +91,10 @@ export default {
 <style lang="scss" scoped>
 .input-container{
     margin: 24px 0;
+}
+
+.submit-button{
+    padding: 8px 16px;
+    margin: auto;
 }
 </style>
