@@ -17,7 +17,7 @@ const loginUser = async (req, res) =>{
         // If the response has no rows it means the user doesn't exist
         // Redirect to the form where error will be shown
         if(user.rows.length == 0){
-            res.redirect('http://localhost:5173/?error=1')
+            res.redirect('/?error=1')
         }
         // If response has rows it means the user exists
         // Check if passwords match 
@@ -26,14 +26,14 @@ const loginUser = async (req, res) =>{
         else{
             const userPassword = user.rows[0].password;
             const {id, username} = user.rows[0];
-            const isMatch = await bcrypt.compare(password,userPassword)
+            const isMatch = await bcrypt.compare(password,userPassword);
             if(isMatch){
                 const token = createToken({id: id, username: username})
                 res.cookie('token', token);
-                res.redirect(`http://localhost:5173/?token=${token}`);
+                res.redirect(`/?token=${token}`);
             }
             else{
-                res.redirect('http://localhost:5173/?error=2')
+                res.redirect('/?error=2')
             }
 
         }

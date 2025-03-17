@@ -8,8 +8,10 @@
             <input @keyup.enter="onSearch" v-model="searchInput" class="searchbar" type="text" placeholder="Search...">
         </div>
 
-        <SliderCard sliderTitle="Categories" />
-        <SliderCard sliderTitle="World Regions" class="mt-5"/>
+        <h1 class="post-title" style="text-align:center">Search features will be available soon...</h1>
+
+        <!-- <SliderCard sliderTitle="Categories" />
+        <SliderCard sliderTitle="World Regions" class="mt-5"/> -->
 
         <PostFeed class="mt-5" />
     </div>

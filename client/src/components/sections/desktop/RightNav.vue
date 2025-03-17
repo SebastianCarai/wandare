@@ -1,11 +1,11 @@
 <template>
     <div class="right-nav-container d-flex flex-column justify-content-between py-5 px-4">
-        <div class="profile-button d-flex align-items-center">
+        <RouterLink :to="`/profile/${userInfo.username}`" class="profile-button d-flex align-items-center">
             <div class="profile-image">
                 <img :src="this.$store.state.user.loggedUser.imageUrl" alt="">
             </div>
             <div class="side-nav-text mx-2">{{userInfo.username}}</div>
-        </div>
+        </RouterLink>
 
         <ul class="side-nav-text">
             <li class="d-flex align-items-center">

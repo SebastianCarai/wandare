@@ -1,26 +1,38 @@
 <template>
     <div>
-        <div v-for="(stage, index) in stages" :key="index" class="accordion">
-            <!-- Icon and stage name -->
-            <div class="accordion-header" @click="showAccordionInfo(stage.id)">
-                <div class="left-accordion">
-                    <div>
-                        <img class="accordion-icon" v-if="stage.stageType == 'ACC'" src="../../../../assets/icons/stage-type/accomodation-black.svg" alt="">
-                        <img class="accordion-icon" v-if="stage.stageType == 'POI'" src="../../../../assets/icons/stage-type/poi-black.svg" alt="">
+        <div style="position:relative" v-for="(stage, index) in stages" :key="index">
+            <div 
+                class="accordion"
+                v-touch:swipe.left="toggleSwipe"
+                v-touch:swipe.right="toggleSwipe"
+                :class="{'swiped' : isSwiped}"
+            >
+                <!-- Icon and stage name -->
+                <div class="accordion-header" @click="showAccordionInfo(stage.id)">
+                    <div class="left-accordion">
+                        <div>
+                            <img class="accordion-icon" v-if="stage.stageType == 'ACC'" src="../../../../assets/icons/stage-type/accomodation-black.svg" alt="">
+                            <img class="accordion-icon" v-if="stage.stageType == 'POI'" src="../../../../assets/icons/stage-type/poi-black.svg" alt="">
+                        </div>
+                        <div class="divider mx-3"></div>
+                        <div class="stage-name">{{ stage.name }}</div>
                     </div>
-                    <div class="divider mx-3"></div>
-                    <div class="stage-name">{{ stage.name }}</div>
+
+                    <div class="chevron-container">
+                        <i :class="isDescriptionShown && activeStage.id == stage.id ? 'rotated' : 'not-rotated'" class="fa-solid fa-chevron-up"></i>
+                    </div>
                 </div>
 
-                <div class="chevron-container">
-                    <i :class="isDescriptionShown && activeStage.id == stage.id ? 'rotated' : 'not-rotated'" class="fa-solid fa-chevron-up"></i>
+                <!-- Active description -->
+                <div v-if="isDescriptionShown && activeStage.id == stage.id" class="description">
+                    {{ activeStage.description }}
                 </div>
             </div>
 
-            <!-- Active description -->
-            <div v-if="isDescriptionShown && activeStage.id == stage.id" class="description">
-                {{ activeStage.description }}
-            </div>
+            <Transition>
+                <div @click="removeStage(stage.id)" class="delete" v-if="isSwiped"><i class="fa-solid fa-trash"></i></div>
+            </Transition>
+
         </div>
     </div>
 </template>
@@ -34,6 +46,7 @@ export default {
         return{
             activeStage: {},
             isDescriptionShown: false,
+            isSwiped: false
         }
     },
     methods:{
@@ -48,6 +61,16 @@ export default {
                     this.isDescriptionShown = true
                 }
             });
+        },
+        toggleSwipe(){
+            this.isSwiped = !this.isSwiped
+        },
+        removeStage(clickedStage){
+            this.stages.forEach(stage => {
+                if(stage.id == clickedStage){
+                    this.stages.splice(this.stages.indexOf(stage), 1);
+                }
+            });
         }
     }
 }
@@ -60,7 +83,28 @@ export default {
     border: 1px solid $black;
     padding: 16px;
     border-radius: 20px;
+    flex-grow: 1;
+    transition:transform 400ms ease;
     margin-top: 16px;
+
+    &.swiped{
+        transition:transform 400ms ease;
+        transform: translateX(-75px);
+    }
+}
+.delete{
+    background-color: #E60000;
+    color: $white;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 65px;
+    height: 65px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .accordion-header{

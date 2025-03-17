@@ -1,8 +1,10 @@
 <template>
-    <div>
+    <div class="container login-page">
+        <img class="login-logo" src="/src/assets/logo/wandare-path-logo-v3.svg" alt="Wandare Logo">
+
         <LoginForm />
 
-        <RouterLink to="/register">Don't have an account? Register</RouterLink>
+        <RouterLink to="/register" class="alternative-link">Don't have an account? Register</RouterLink>
     </div>
 </template>
 
@@ -22,3 +24,26 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.login-page{
+    height: 100vh;
+}
+
+.container{
+    max-width: 600px;
+    padding-top: 40px;
+}
+
+.login-logo{
+    max-width: 240px;
+    display: block;
+    margin: 0 auto 40px;
+}
+
+.alternative-link{
+    display: block;
+    text-align: center;
+    margin-top: 16px;
+}
+</style>

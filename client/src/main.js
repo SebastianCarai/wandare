@@ -1,6 +1,7 @@
 import './assets/main.css'
 import { createApp } from 'vue'
 import App from './App.vue'
+import Vue3TouchEvents from "vue3-touch-events";
 import router from './router/router'
 import store from './store/store'
 import VueCookies from 'vue-cookies';
@@ -34,5 +35,7 @@ app.use(store)
 app.use(VueCookies)
 
 app.use(router)
+
+app.use(Vue3TouchEvents)
 
 app.mount('#app')

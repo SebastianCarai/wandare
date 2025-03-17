@@ -27,6 +27,7 @@ const instance = Axios.create();
 const axios = setupCache(instance);
 import logOut from '../../general_functions/logout';
 import HomePostSection from '../../components/sections/desktop/HomePostSection.vue';
+import getProfileInfo from '../../general_functions/get_profile_info';
 const token = localStorage.getItem('token');
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
 const headers = {
@@ -67,10 +68,11 @@ export default {
         },
         // Get home feed posts
         getHomeFeed(){
+            this.$store.commit('setLoading', true);
             axios.get('/api/home-feed', {headers : headers})
             .then((res) => {
-                console.log(res.cached);
                 this.posts = res.data;
+                this.$store.commit('setLoading', false);
             })
         }
     },

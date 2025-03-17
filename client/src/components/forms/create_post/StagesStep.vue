@@ -38,7 +38,7 @@ export default {
     components:{StageModal, StagesList, PdpMap},
     data(){
         return{
-            zoom: 0,
+            zoom: 11,
             center: {}
         }
     },
@@ -63,7 +63,6 @@ export default {
         },
         updateMapCenter(center){
             this.center = center;
-            console.log(this.center);
         }
     }
 }

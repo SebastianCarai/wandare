@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@vueuse/core": "^10.11.0",
+    "@vueuse/components": "^10.11.0",
     "axios": "^1.7.2",
     "axios-cache-interceptor": "^1.5.3",
     "bootstrap": "^5.3.3",
@@ -22,6 +22,7 @@
     "vue-google-autocomplete": "^1.1.4",
     "vue-picture-cropper": "^0.7.0",
     "vue-router": "^4.3.0",
+    "vue3-touch-events": "^4.1.8",
     "vuex": "^4.1.0"
   },
   "devDependencies": {

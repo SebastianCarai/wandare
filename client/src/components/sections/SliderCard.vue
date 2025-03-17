@@ -5,19 +5,19 @@
 
         <div class="slider-container">
             <div class="card">
-                <img src="/Users/sebastiancarai/Downloads/Wandare_files/pexels-photo-1062249.jpeg" alt="Category name">
+                <img src="https://cdn2.lionard.com/photo/4391/full/villa-sarno-casamicciola148ss.jpg" alt="Category name">
                 <h2 class="card-title">Sea</h2>
             </div>
             <div class="card">
-                <img src="/Users/sebastiancarai/Downloads/Wandare_files/pexels-photo-1062249.jpeg" alt="Category name">
+                <img src="https://cdn2.lionard.com/photo/4391/full/villa-sarno-casamicciola148ss.jpg" alt="Category name">
                 <h2 class="card-title">Mountain</h2>
             </div>
             <div class="card">
-                <img src="/Users/sebastiancarai/Downloads/Wandare_files/pexels-photo-1062249.jpeg" alt="Category name">
+                <img src="https://cdn2.lionard.com/photo/4391/full/villa-sarno-casamicciola148ss.jpg" alt="Category name">
                 <h2 class="card-title">By Car</h2>
             </div>
             <div class="card">
-                <img src="/Users/sebastiancarai/Downloads/Wandare_files/pexels-photo-1062249.jpeg" alt="Category name">
+                <img src="https://cdn2.lionard.com/photo/4391/full/villa-sarno-casamicciola148ss.jpg" alt="Category name">
                 <h2 class="card-title">Category name</h2>
             </div>
         </div>

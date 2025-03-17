@@ -8,7 +8,7 @@ const createPost = async (req, res) => {
     try {
         // Get data from request body
         const {authorId, title, description, thumbnails, duration, stages, price, whatToWear, requiredDocuments, mapCenter, mapZoom} = req.body;
-    
+
         // Function that generates string for image name
         // This name will be used to generate SignedUrl for s3 images
         const randomImageName = () => crypto.randomBytes(32).toString('hex');
@@ -39,7 +39,7 @@ const createPost = async (req, res) => {
          }])
         .select('id')
         .single()
-    
+
         // Handle responses from db
         if(error){
             console.log(error);
@@ -49,6 +49,7 @@ const createPost = async (req, res) => {
     
         // For each stage
         for (const stage of stages){
+            console.log(stage.marker);
             // Images name of each stage (will be used to get SignedUrl)
             const stageImagesNames = [];
     
@@ -60,6 +61,7 @@ const createPost = async (req, res) => {
                 // Save image to S3 bucket
                 await imageToS3(stageImage, stageImageName, s3, bucketName);
             }
+
     
             // Add record in stage table
             const { data:stageData, stagesError } = await supabase
@@ -77,11 +79,13 @@ const createPost = async (req, res) => {
                 console.log(stagesError)
             }         
         };
+
+        console.log('Everything ok');
         
         res.json(post.id);
 
     } catch (error) {
-        res.sendStatus(500).json({msg: error})
+        res.sendStatus(500);
     }
     
 

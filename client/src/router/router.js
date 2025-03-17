@@ -34,10 +34,22 @@ const router = createRouter({
       component: () => import('../views/logged/Search.vue')
     },
     {
+      path: '/friends',
+      name: 'network',
+      meta: { requiresAuth: true },
+      component: () => import('../views/logged/Network.vue')
+    },
+    {
       path: '/create-post',
       name: 'createpost',
       meta: { requiresAuth: true },
       component: () => import('../views/logged/CreatePost.vue')
+    },
+    {
+      path: '/edit/profile/:username',
+      name: 'editprofile',
+      meta: { requiresAuth: true },
+      component: () => import('../views/logged/EditProfile.vue')
     },
     {
       path: '/posts/:id',

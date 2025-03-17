@@ -7,11 +7,11 @@
             <div v-if="description" class="input-description" :class="{'white' : isWhite}">{{ description }}</div>
             <div class="file-input-wrapper">
                 <!-- Cropped image results -->
-                <div v-longpress="toggleEditMode" style="position:relative;" class="d-flex form-thumb-preview" v-for="(image,index) in croppedImages" :key="index" >
-                    <div class="" :class="{'is-round' : isRound}">
-                        <img :src="image.base64" alt="">
-                        <i v-if="isEditModeActive" class="fa-regular fa-circle-xmark"></i>
-                    </div>
+                <div style="position:relative;" class="d-flex form-thumb-preview" v-for="(image,index) in croppedImages" :key="index" >
+                        <div :class="{'is-round' : isRound}">
+                            <img :src="image.base64" alt="">
+                            <i @click="removeImage(image.id)" class="fa-regular fa-circle-xmark"></i>
+                        </div>
                 </div>
                 <!-- Input for images -->
                 <label v-if="croppedImages.length < maxImages" class="file-label" :class="{'white' : isWhite}" for="images">
@@ -46,8 +46,8 @@
                 />
 
                 <div class="d-flex">
-                    <button v-if="activeCropperImage < imagesArray.length - 1" @click="getCroppedImage" class="cropper-btn">Next</button>
-                    <button type="button" v-if="activeCropperImage == imagesArray.length - 1" @click="getCroppedImage" class="cropper-btn">Done</button>
+                    <button :class="{'btn-not-active' : isCropperLoading }" @click="getCroppedImage" v-if="activeCropperImage < imagesArray.length - 1" class="cropper-btn">Next</button>
+                    <button :class="{'btn-not-active' : isCropperLoading }" type="button" v-if="activeCropperImage == imagesArray.length - 1" @click="getCroppedImage" class="cropper-btn">Done</button>
                 </div>
 
             </div>
@@ -59,10 +59,10 @@
 <script>
 import VuePictureCropper, { cropper } from 'vue-picture-cropper';
 import generateRandomString from '../../general_functions/randomstring.js';
-import axios from 'axios';
+import { OnLongPress, UseDraggable } from '@vueuse/components';
 
 export default {
-    components:{VuePictureCropper},
+    components:{VuePictureCropper, OnLongPress, UseDraggable},
     // The "thumbnails" prop is expected to get images setted in the first step of the post creation
     // If the prop is null, the cropper is used in the stage creation
     // If not null, the cropper is used in the first step of the post creation
@@ -74,21 +74,32 @@ export default {
         description: String,
         isRound : Boolean,
         maxImages : Number,
-        isCentered : Boolean
+        isCentered : Boolean,
+        imagesToEdit : Array,
+        forceEdit: Boolean
     },
     data(){
         return{
             imagesArray: [],
             isShowModal: false,
             // this.thumbnails is the prop passed in the first step of the post creation
-            croppedImages: this.thumbnails || [],
+            croppedImages: this.thumbnails || this.imagesToEdit || [],
             croppedFiles: [],
             activeCropperImage: 0,
             pic: '',
-            isEditModeActive : false
+            isCropperLoading: false
         }
     },
     methods:{
+        removeImage(id){
+            for (const image of this.croppedImages){
+                if(image.id == id){
+                    this.croppedImages.splice(this.croppedImages.indexOf(image), 1);
+                }  
+                
+                this.$emit('images-cropped', this.croppedImages, this.croppedFiles);
+            }
+        },
         // Get data from the images uploaded
         // Then save the base 64 in imagesArray
         getImageData($event){
@@ -122,7 +133,8 @@ export default {
 
                 n++
                 this.pic = this.imagesArray[this.activeCropperImage].base64
-                this.isShowModal = true
+                this.isShowModal = true;
+
             });
         },
         // Check how many images have been uploaded
@@ -140,7 +152,16 @@ export default {
             this.pic = this.imagesArray[this.activeCropperImage].base64
         },
         // Get cropped image data from the cropper
-        async getCroppedImage(){
+        async getCroppedImage($e){
+            if (this.isCropperLoading == true) {
+                console.log("can't crop");
+                return
+            }
+            console.log(this.croppedImages);
+
+            this.isCropperLoading = true;
+
+            // $e.preventDefault();
             if (!cropper) return            
 
             const base64 = cropper.getDataURL()
@@ -209,11 +230,9 @@ export default {
                 this.changeCropperImage();
             }
 
-
             this.showNextInput();
-        },
-        toggleEditMode(){
-            this.isEditModeActive = !this.isEditModeActive;
+
+            this.isCropperLoading = false;
         }
     }
 }
@@ -230,8 +249,6 @@ export default {
     max-width: 500px;
     max-height: 500px;
     display: flex;
-    // padding-left: 8px;
-    // padding-right: 8px;
     flex-direction: column;
     align-items: center;
     position: fixed;
@@ -266,9 +283,17 @@ export default {
         border: .5px solid $white;
         border-radius: 5px;
         margin: 8px;
+        &.btn-not-active{
+            background-color: rgba($color: $black, $alpha: 0.7);
+        }
     }
 }
 .center{
     text-align: center !important;
+}
+
+.is-round{
+    border-radius: 100%;
+    overflow: hidden;
 }
 </style>

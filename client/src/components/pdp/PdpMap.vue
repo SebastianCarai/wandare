@@ -1,5 +1,8 @@
 <template>
-  <div class="vue-leaflet-map" >
+  <div class="vue-leaflet-map" :class="{full: isMapExpanded}">
+    <div @click="expandMap" class="expand-map-button">
+      <i class="fa-solid fa-expand"></i>
+    </div>
     <LMap v-if="stages.length > 0"
         @update:zoom="updateZoom" 
         @update:center="updateCenter"
@@ -23,6 +26,7 @@
           <p class="description">{{stage.description}}</p>
         </LPopup>
         </l-marker>
+
     </LMap>
   </div>
 </template>
@@ -38,6 +42,11 @@ export default {
         center : Array,
         zoom : Number
     },
+    data(){
+      return{
+        isMapExpanded: false
+      }
+    },
     components: {LMap,LTileLayer,LMarker,LPopup, LControlZoom, ImageSlider},
     methods:{
       updateZoom(zoom){
@@ -45,6 +54,9 @@ export default {
       },
       updateCenter(center){
         this.$emit('center-updated',center)
+      },
+      expandMap(){
+        this.isMapExpanded = !this.isMapExpanded;
       }
     }
 };
@@ -61,13 +73,39 @@ export default {
     border-radius: 20px; 
     overflow: hidden; 
     border: 2px solid $black_60;
+    position: relative;
+
+    &.full{
+      height:100vh;
+      aspect-ratio: auto;
+      width: 100%;
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      z-index: 100;
+      overflow: visible;
+      border: none;
+      margin: 0;
+    }
+
+    .expand-map-button{
+      width: 40px;
+      height: 40px;
+      font-size: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      left: 10px;
+      bottom: 16px;
+      z-index: 100;
+      background-color: white;
+      border: 2px solid rgba(0,0,0,0.2);
+      border-radius: 4px;
+    }
     
     & *{
-        z-index: 0;
+        z-index: 5;
     }
-}
-
-h2{
-
 }
 </style>

@@ -33,7 +33,7 @@ const registerUser = async (req,res) => {
 
         if(response.rows.length !== 0){
             console.log('user already exists');
-            res.redirect('http://localhost:5173/register?error=1');
+            res.redirect('/register?error=1');
         }
         
         // If email and username are free -> insert new record in DB
@@ -48,7 +48,7 @@ const registerUser = async (req,res) => {
 
                 const token = createToken({id: userInfo.rows[0].id, username: username})
                 res.cookie('token', token);
-                res.redirect(`http://localhost:5173/?token=${token}`);
+                res.redirect(`/?token=${token}`);
             } catch (error) {
                 throw error
             }

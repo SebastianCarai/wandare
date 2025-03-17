@@ -13,11 +13,16 @@ import getUserPosts from './get_requests/user_posts.js';
 import createPost from './post_requests/create_post/create-post.js';
 import getPostDetails from './get_requests/post_details.js';
 import homeFeed from './get_requests/homepage_posts.js';
-import getUserInfo from './get_requests/user_info.js'
+import getUserInfo from './get_requests/user_info.js';
+import updateProfile from './update_requests/update_profile.js';
+import path from 'path';
 
 
 const app = express();
 const port = 3000;
+
+app.use(express.static('client/dist'));
+
 
 app.use(bodyParser.urlencoded({ extended: false, limit: '5mb' }))
 app.use(bodyParser.json({limit: '10mb'}));
@@ -59,6 +64,9 @@ app.post('/api/create-post', upload.array('thumbnails[]'), auth.validateToken, c
 
 // Get post info
 app.get('/api/posts/:id', auth.validateToken, getPostDetails)
+
+// Get post info
+app.post('/api/edit/profile/:id', auth.validateToken, updateProfile)
 
 
 app.listen(port, () => {
